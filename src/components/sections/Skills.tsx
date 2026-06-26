@@ -13,7 +13,7 @@ export function Skills() {
           </SectionHeading>
         </SectionReveal>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-4">
           {skillCategories.map((category, catIndex) => (
             <SectionReveal key={category.title} delay={catIndex * 0.1}>
               <div className="group h-full rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5">

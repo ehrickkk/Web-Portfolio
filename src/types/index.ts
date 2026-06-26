@@ -10,11 +10,16 @@ export interface SkillCategory {
 export interface Project {
   id: string;
   title: string;
-  description: string;
-  tech: string[];
-  githubUrl: string;
-  liveUrl: string;
-  thumbnailGradient: string;
+  shortDescription: string;
+  longDescription: string;
+  problem: string;
+  role: string;
+  tags: string[];
+  images: string[];
+  gradient: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  featured: boolean;
 }
 
 export interface ExperienceEntry {

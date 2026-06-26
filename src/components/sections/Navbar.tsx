@@ -123,14 +123,14 @@ export function Navbar() {
             </ul>
 
             <div className="flex items-center gap-2">
-              <button
+              {/* <button
                 type="button"
                 onClick={toggleTheme}
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
                 className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition-all hover:border-accent/50 hover:text-white"
               >
                 {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-              </button>
+              </button> */}
 
               <button
                 type="button"

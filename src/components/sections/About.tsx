@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { SectionHeading } from "../ui/SectionHeading";
 import { SectionReveal } from "../ui/SectionReveal";
+import profilePicture from "../../assets/my-image2.png";
 
 const values = [
   "User-first thinking in every line of code",
@@ -25,14 +26,20 @@ export function About() {
             <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
               <div className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/5 blur-2xl" />
               <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-surface-elevated">
-                <div className="flex h-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-surface-elevated to-surface p-8">
+              <img
+                  src={profilePicture}
+                  alt="Eric Lor"
+                  className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-[1.02]"
+                />
+                {/* Image Placeholder */}
+                {/* <div className="flex h-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-surface-elevated to-surface p-8">
                   <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent/40 bg-accent/10 font-display text-3xl font-bold text-accent">
                     EL
                   </div>
                   <p className="text-center text-sm text-muted">
                     Photo placeholder
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </SectionReveal>

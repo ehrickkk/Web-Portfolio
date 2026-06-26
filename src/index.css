@@ -71,4 +71,22 @@
   .section-container {
     @apply mx-auto max-w-6xl;
   }
+
+  .modal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
+  }
+
+  .modal-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .modal-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.4);
+    border-radius: 9999px;
+  }
 }

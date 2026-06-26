@@ -4,21 +4,23 @@ export const skillCategories: SkillCategory[] = [
   {
     title: "Frontend",
     skills: [
-      { name: "React" },
+      { name: "React JS" },
+      { name: "React Native" },
       { name: "TypeScript" },
       { name: "Tailwind CSS" },
       { name: "Next.js" },
-      { name: "Framer Motion" },
+      { name: "Vite" },
     ],
   },
   {
-    title: "Backend",
+    title: "Styling",
     skills: [
-      { name: "Node.js" },
-      { name: "Express" },
-      { name: "PostgreSQL" },
-      { name: "REST APIs" },
-      { name: "Python" },
+      { name: "CSS" },
+      { name: "Tailwind CSS" },
+      { name: "Responsive UI" },
+      { name: "Material UI" },
+      { name: "Chakra UI" },
+      { name: "Material UI" },
     ],
   },
   {
@@ -27,8 +29,17 @@ export const skillCategories: SkillCategory[] = [
       { name: "Git" },
       { name: "Docker" },
       { name: "Figma" },
-      { name: "Jest" },
-      { name: "Cypress" },
+      { name: "Wordpress" },
+      { name: "Google Docs" },
+      { name: "Google Sheets" },
+      { name: "Trello" },
+    ],
+  },
+  {
+    title: "Core",
+    skills: [
+      { name: "HTML" },
+      { name: "CSS" },
     ],
   },
 ];
