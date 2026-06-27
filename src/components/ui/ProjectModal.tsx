@@ -91,7 +91,7 @@ function ImageCarousel({ project, slides }: ImageCarouselProps) {
             <img
               src={currentSlide}
               alt={`${project.title} screenshot ${currentIndex + 1}`}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-fill"
               draggable={false}
             />
           ) : (
