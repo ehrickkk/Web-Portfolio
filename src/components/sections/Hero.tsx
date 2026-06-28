@@ -272,8 +272,8 @@ export function Hero() {
               </span>
               Open to Work
             </div>
-            <p className="text-xs text-white/80">3+ Years Exp.</p>
-            <p className="mt-1 text-xs text-white/80">10+ Projects</p>
+            <p className="text-xs text-white/80">3+ Academic Years Exp.</p>
+            <p className="mt-1 text-xs text-white/80">3 Projects</p>
           </div>
         </div>
       </motion.div>

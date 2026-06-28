@@ -1,198 +1,217 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Send } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "../ui/BrandIcons";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { socialLinks } from "../../data/navigation";
+import { motion } from "framer-motion";
+import { ArrowUpRight, FileText, Mail } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
 import { SectionHeading } from "../ui/SectionHeading";
 import { SectionReveal } from "../ui/SectionReveal";
+import { GithubIcon, LinkedinIcon } from "../ui/BrandIcons";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
-type ContactFormValues = z.infer<typeof contactSchema>;
+interface SocialChannel {
+  title: string;
+  handle: string;
+  href: string;
+  icon: IconComponent;
+  external: boolean;
+  highlight?: boolean;
+  download?: boolean;
+}
 
-const iconMap = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
-  email: Mail,
-} as const;
+const statusItems = [
+  { color: "bg-emerald-400", label: "Open to full-time roles" },
+  { color: "bg-emerald-400", label: "Available for freelance projects" },
+  { color: "bg-yellow-400", label: "Selective with short-term contracts" },
+] as const;
+
+const infoItems = [
+  { label: "Location", value: "Remote · Open to relocate" },
+  { label: "Email", value: "eric.develos.lor@gmail.com" },
+  { label: "Response Time", value: "Within 24 hours" },
+] as const;
+
+const socialChannels: SocialChannel[] = [
+  {
+    title: "GitHub",
+    handle: "@ehrickkk",
+    href: "https://github.com/ehrickkk",
+    icon: GithubIcon,
+    external: true,
+  },
+  {
+    title: "LinkedIn",
+    handle: "Eric Lor",
+    href: "https://www.linkedin.com/in/ericdlor101/",
+    icon: LinkedinIcon,
+    external: true,
+  },
+  {
+    title: "Resume",
+    handle: "Download CV",
+    href: "./src/assets/Ericlor_CV.pdf",
+    icon: FileText,
+    external: false,
+    highlight: true,
+    download: true,
+  },
+];
+
+interface SocialCardProps {
+  channel: SocialChannel;
+}
+
+function SocialCard({ channel }: SocialCardProps) {
+  const Icon = channel.icon;
+
+  return (
+    <a
+      href={channel.href}
+      target={channel.external ? "_blank" : undefined}
+      rel={channel.external ? "noopener noreferrer" : undefined}
+      download={channel.download ? true : undefined}
+      className={`group flex cursor-pointer flex-col gap-3 rounded-2xl border p-5 transition-all duration-300 hover:border-accent/40 ${
+        channel.highlight
+          ? "border-accent/20 bg-accent/5"
+          : "border-border bg-surface-elevated"
+      }`}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
+          <Icon size={20} className="text-accent" />
+        </div>
+        <ArrowUpRight
+          size={16}
+          className="text-muted transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+        />
+      </div>
+
+      <div>
+        <p className="mt-2 text-sm font-semibold text-heading">{channel.title}</p>
+        <p className="text-xs text-muted">{channel.handle}</p>
+      </div>
+    </a>
+  );
+}
 
 export function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", message: "" },
-  });
-
-  const onSubmit = async (_data: ContactFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 4000);
-  };
-
   return (
     <section id="contact" className="section-padding">
       <div className="section-container">
-        <SectionReveal>
-          <SectionHeading label="Contact" title="Let's build something">
-            Have a project in mind or just want to say hello? Drop me a message —
-            I typically respond within 24 hours.
-          </SectionHeading>
-        </SectionReveal>
+        <div className="mx-auto flex max-w-2xl flex-col gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="flex justify-center"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 font-mono text-sm text-green-400">
+              <motion.span
+                className="h-2 w-2 rounded-full bg-green-400"
+                animate={{
+                  scale: [1, 1.4, 1],
+                  opacity: [1, 0.5, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              Available for new opportunities
+            </div>
+          </motion.div>
 
-        <div className="grid gap-12 lg:grid-cols-5">
-          <SectionReveal delay={0.1} className="lg:col-span-2">
-            <div className="space-y-8">
-              <div>
-                <h3 className="font-display text-lg font-semibold text-heading">
-                  Connect with me
-                </h3>
-                <p className="mt-2 text-sm text-muted">
-                  Prefer a direct line? Reach out through any of these channels.
-                </p>
-              </div>
+          <SectionReveal>
+            <SectionHeading label="Contact" title="Let's build something">
+              Have a project in mind or just want to say hello? Drop me a message —
+              I typically respond within 24 hours.
+            </SectionHeading>
+          </SectionReveal>
 
-              <div className="flex gap-3">
-                {socialLinks.map((link) => {
-                  const Icon = iconMap[link.icon];
-                  return (
+          <SectionReveal delay={0.1}>
+            <div className="flex flex-col rounded-2xl border border-border bg-surface-elevated px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+              {infoItems.map((item, index) => (
+                <div
+                  key={item.label}
+                  className={`py-3 sm:py-0 ${
+                    index < infoItems.length - 1
+                      ? "border-b border-border sm:border-r sm:border-b-0 sm:pr-6"
+                      : ""
+                  } ${index > 0 ? "sm:pl-6" : ""} ${
+                    index === 1 ? "sm:flex-1 sm:px-6" : ""
+                  }`}
+                >
+                  <p className="mb-1 font-mono text-xs tracking-widest text-accent uppercase">
+                    {item.label}
+                  </p>
+                  {item.label === "Email" ? (
                     <a
-                      key={link.name}
-                      href={link.url}
-                      target={link.icon === "email" ? undefined : "_blank"}
-                      rel={
-                        link.icon === "email"
-                          ? undefined
-                          : "noopener noreferrer"
-                      }
-                      aria-label={link.name}
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface-elevated text-muted transition-all hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
+                      href="mailto:eric.develos.lor@gmail.com"
+                      className="text-sm text-body transition-colors hover:text-accent"
                     >
-                      <Icon size={20} />
+                      {item.value}
                     </a>
-                  );
-                })}
-              </div>
+                  ) : (
+                    <p className="text-sm text-body">{item.value}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </SectionReveal>
 
-              <div className="rounded-2xl border border-border bg-surface-elevated p-6">
-                <p className="font-mono text-xs tracking-widest text-accent uppercase">
-                  Location
-                </p>
-                <p className="mt-2 text-heading">Remote · Open to relocate</p>
-                <p className="mt-4 font-mono text-xs tracking-widest text-accent uppercase">
-                  Email
-                </p>
+          <SectionReveal delay={0.2}>
+            <div className="rounded-2xl border border-border border-l-2 border-l-accent bg-surface-elevated p-5">
+              <p className="mb-4 font-mono text-xs tracking-widest text-accent uppercase">
+                Current Status
+              </p>
+              <ul className="space-y-3">
+                {statusItems.map((item) => (
+                  <li
+                    key={item.label}
+                    className="flex items-center gap-3 text-sm text-body"
+                  >
+                    <span
+                      className={`h-2 w-2 shrink-0 rounded-full ${item.color}`}
+                    />
+                    {item.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.3}>
+            <div className="relative rounded-2xl border border-accent/30 bg-gradient-to-r from-accent/10 via-surface-elevated to-surface-elevated p-6 shadow-lg shadow-accent/10 md:p-8">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-accent/15">
+                    <Mail size={26} className="text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-heading">Email</p>
+                    <p className="text-sm text-muted">
+                      eric.develos.lor@gmail.com
+                    </p>
+                  </div>
+                </div>
+
                 <a
                   href="mailto:eric.develos.lor@gmail.com"
-                  className="mt-2 inline-block text-body transition-colors hover:text-accent"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110 sm:w-auto"
                 >
-                  eric.develos.lor@gmail.com
+                  Send a message
                 </a>
               </div>
             </div>
           </SectionReveal>
 
-          <SectionReveal delay={0.2} className="lg:col-span-3">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              className="rounded-2xl border border-border bg-surface-elevated p-6 md:p-8"
-            >
-              <div className="space-y-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm font-medium text-heading"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    {...register("name")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-body outline-none transition-colors placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Your name"
-                  />
-                  {errors.name && (
-                    <p className="mt-1.5 text-sm text-red-400">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-heading"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    {...register("email")}
-                    className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-body outline-none transition-colors placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="you@example.com"
-                  />
-                  {errors.email && (
-                    <p className="mt-1.5 text-sm text-red-400">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-heading"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    {...register("message")}
-                    className="w-full resize-none rounded-xl border border-border bg-surface px-4 py-3 text-body outline-none transition-colors placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Tell me about your project..."
-                  />
-                  {errors.message && (
-                    <p className="mt-1.5 text-sm text-red-400">
-                      {errors.message.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-8 py-3.5 font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:shadow-accent/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <Send size={16} />
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
-
-                {submitted && (
-                  <p className="text-sm font-medium text-emerald-400">
-                    Message sent! I'll get back to you soon.
-                  </p>
-                )}
-              </div>
-            </form>
-          </SectionReveal>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {socialChannels.map((channel, index) => (
+              <SectionReveal key={channel.title} delay={0.4 + index * 0.05}>
+                <SocialCard channel={channel} />
+              </SectionReveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
