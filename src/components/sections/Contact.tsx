@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Check, SendHorizonal, FileText, Mail, Copy } from "lucide-react";
+import { ArrowUpRight, Check, FileText, Mail } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -115,18 +115,15 @@ function SocialCard({ channel }: SocialCardProps) {
 export function Contact() {
   const [heroFeedback, setHeroFeedback] = useState<string | null>(null);
   const [stripFeedback, setStripFeedback] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const [isOpeningGmail, setIsOpeningGmail] = useState(false);
   const heroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stripTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const gmailTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
       if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
       if (stripTimerRef.current) clearTimeout(stripTimerRef.current);
-      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
       if (gmailTimerRef.current) clearTimeout(gmailTimerRef.current);
     };
   }, []);
@@ -157,12 +154,9 @@ export function Contact() {
 
       try {
         await navigator.clipboard.writeText(EMAIL);
-        message = "Email copied";
-        setCopied(true);
-        if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
-        copiedTimerRef.current = setTimeout(() => setCopied(false), 3000);
+        message = "Email copied to clipboard";
       } catch {
-        setCopied(false);
+        // fallback message already set
       }
 
       showFeedback(setFeedback, timerRef, message);
@@ -299,8 +293,6 @@ export function Contact() {
                     className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                   >
                     Send a message
-                    {/* {copied ? <Check size={15} /> : <SendHorizonal size={15} />} */}
-
                   </button>
                   {heroFeedback && (
                     <p

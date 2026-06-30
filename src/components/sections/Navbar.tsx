@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { navLinks } from "../../data/navigation";
-import { useTheme } from "../../context/ThemeContext";
 
 const sectionIds = [
   "home",
@@ -16,7 +15,6 @@ const sectionIds = [
 type SectionId = (typeof sectionIds)[number];
 
 export function Navbar() {
-  // const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>("home");
