@@ -261,9 +261,10 @@ export function Hero() {
         className="pointer-events-none absolute top-1/2 right-8 z-10 hidden -translate-y-1/2 xl:block"
       >
         <div className="flex flex-col items-center gap-4">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full border border-white/20 bg-white/5 text-sm font-semibold text-white backdrop-blur-sm ring-2 ring-accent/50 shadow-lg shadow-accent/20">
+          {/* Profile Picture Placeholder */}
+          {/* <div className="flex h-24 w-24 items-center justify-center rounded-full border border-white/20 bg-white/5 text-sm font-semibold text-white backdrop-blur-sm ring-2 ring-accent/50 shadow-lg shadow-accent/20">
             EL
-          </div>
+          </div> */}
           <div className="w-44 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
             <div className="mb-3 flex items-center gap-2 text-sm font-medium text-white">
               <span className="relative flex h-2.5 w-2.5">
