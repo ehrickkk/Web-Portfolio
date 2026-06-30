@@ -1,9 +1,22 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, FileText, Mail } from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
+import { ArrowUpRight, Check, SendHorizonal, FileText, Mail, Copy } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type MutableRefObject,
+  type SVGProps,
+} from "react";
 import { SectionHeading } from "../ui/SectionHeading";
 import { SectionReveal } from "../ui/SectionReveal";
-import { GithubIcon, LinkedinIcon } from "../ui/BrandIcons";
+import { GithubIcon, LinkedinIcon, FacebookIcon } from "../ui/BrandIcons";
+
+const EMAIL = "eric.develos.lor@gmail.com";
+const GMAIL_COMPOSE_URL =
+  "https://mail.google.com/mail/?view=cm&fs=1&to=eric.develos.lor@gmail.com";
+const GMAIL_OPEN_DELAY_MS = 900;
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
@@ -20,12 +33,12 @@ interface SocialChannel {
 const statusItems = [
   { color: "bg-emerald-400", label: "Open to full-time roles" },
   { color: "bg-emerald-400", label: "Available for freelance projects" },
-  { color: "bg-yellow-400", label: "Selective with short-term contracts" },
+  // { color: "bg-yellow-400", label: "Selective with short-term contracts" },
 ] as const;
 
 const infoItems = [
   { label: "Location", value: "Remote · Open to relocate" },
-  { label: "Email", value: "eric.develos.lor@gmail.com" },
+  { label: "Email", value: EMAIL },
   { label: "Response Time", value: "Within 24 hours" },
 ] as const;
 
@@ -42,6 +55,13 @@ const socialChannels: SocialChannel[] = [
     handle: "Eric Lor",
     href: "https://www.linkedin.com/in/ericdlor101/",
     icon: LinkedinIcon,
+    external: true,
+  },
+  {
+    title: "Facebook",
+    handle: "Eric Lor",
+    href: "https://www.facebook.com/EricDLor/",
+    icon: FacebookIcon,
     external: true,
   },
   {
@@ -93,6 +113,69 @@ function SocialCard({ channel }: SocialCardProps) {
 }
 
 export function Contact() {
+  const [heroFeedback, setHeroFeedback] = useState<string | null>(null);
+  const [stripFeedback, setStripFeedback] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [isOpeningGmail, setIsOpeningGmail] = useState(false);
+  const heroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stripTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const gmailTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
+      if (stripTimerRef.current) clearTimeout(stripTimerRef.current);
+      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+      if (gmailTimerRef.current) clearTimeout(gmailTimerRef.current);
+    };
+  }, []);
+
+  const showFeedback = useCallback(
+    (
+      setFeedback: (message: string | null) => void,
+      timerRef: MutableRefObject<ReturnType<typeof setTimeout> | null>,
+      message: string,
+    ) => {
+      setFeedback(message);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setFeedback(null), 3000);
+    },
+    [],
+  );
+
+  const handleEmailClick = useCallback(
+    async (source: "hero" | "strip") => {
+      if (isOpeningGmail) return;
+
+      const setFeedback = source === "hero" ? setHeroFeedback : setStripFeedback;
+      const timerRef = source === "hero" ? heroTimerRef : stripTimerRef;
+
+      let message = "Opened Gmail — copy the email manually";
+
+      setIsOpeningGmail(true);
+
+      try {
+        await navigator.clipboard.writeText(EMAIL);
+        message = "Email copied";
+        setCopied(true);
+        if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+        copiedTimerRef.current = setTimeout(() => setCopied(false), 3000);
+      } catch {
+        setCopied(false);
+      }
+
+      showFeedback(setFeedback, timerRef, message);
+
+      if (gmailTimerRef.current) clearTimeout(gmailTimerRef.current);
+      gmailTimerRef.current = setTimeout(() => {
+        window.open(GMAIL_COMPOSE_URL, "_blank", "noopener,noreferrer");
+        setIsOpeningGmail(false);
+      }, GMAIL_OPEN_DELAY_MS);
+    },
+    [isOpeningGmail, showFeedback],
+  );
+
   return (
     <section id="contact" className="section-padding">
       <div className="section-container">
@@ -145,12 +228,26 @@ export function Contact() {
                     {item.label}
                   </p>
                   {item.label === "Email" ? (
-                    <a
-                      href="mailto:eric.develos.lor@gmail.com"
-                      className="text-sm text-body transition-colors hover:text-accent"
-                    >
-                      {item.value}
-                    </a>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => handleEmailClick("strip")}
+                        disabled={isOpeningGmail}
+                        aria-label="Copy email and open Gmail compose"
+                        className="text-left text-sm text-body transition-colors hover:text-accent disabled:cursor-not-allowed disabled:opacity-70"
+                      >
+                        {item.value}
+                      </button>
+                      {stripFeedback && (
+                        <p
+                          role="status"
+                          className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-emerald-400"
+                        >
+                          <Check size={12} />
+                          {stripFeedback}
+                        </p>
+                      )}
+                    </div>
                   ) : (
                     <p className="text-sm text-body">{item.value}</p>
                   )}
@@ -189,23 +286,37 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="text-lg font-bold text-heading">Email</p>
-                    <p className="text-sm text-muted">
-                      eric.develos.lor@gmail.com
-                    </p>
+                    <p className="text-sm text-muted">{EMAIL}</p>
                   </div>
                 </div>
 
-                <a
-                  href="mailto:eric.develos.lor@gmail.com"
-                  className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110 sm:w-auto"
-                >
-                  Send a message
-                </a>
+                <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:items-end">
+                  <button
+                    type="button"
+                    onClick={() => handleEmailClick("hero")}
+                    disabled={isOpeningGmail}
+                    aria-label="Copy email and open Gmail compose"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+                  >
+                    Send a message
+                    {/* {copied ? <Check size={15} /> : <SendHorizonal size={15} />} */}
+
+                  </button>
+                  {heroFeedback && (
+                    <p
+                      role="status"
+                      className="flex items-center justify-center gap-1.5 text-xs font-medium text-emerald-400 sm:justify-end"
+                    >
+                      <Check size={12} />
+                      {heroFeedback}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </SectionReveal>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {socialChannels.map((channel, index) => (
               <SectionReveal key={channel.title} delay={0.4 + index * 0.05}>
                 <SocialCard channel={channel} />
