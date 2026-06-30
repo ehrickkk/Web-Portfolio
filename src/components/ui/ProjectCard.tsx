@@ -32,7 +32,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
           <img
             src={project.images[0]}
             alt={project.title}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-fill"
           />
         ) : (
           <>
