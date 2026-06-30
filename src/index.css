@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-display: "Syne", system-ui, sans-serif;
+  --font-display: "Montserrat", system-ui, sans-serif;
   --font-sans: "DM Sans", system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", monospace;
-
+    
   --color-bg: var(--theme-bg);
   --color-surface: var(--theme-surface);
   --color-surface-elevated: var(--theme-surface-elevated);

@@ -1,4 +1,9 @@
 import type { Project } from "../types";
+import seated1 from "../assets/seated1.png";
+import seated2 from "../assets/seated2.png";
+import seated3 from "../assets/seated3.png";
+import seated4 from "../assets/seated4.png";
+import eventure0 from "../assets/eventure0.png";
 import eventure1 from "../assets/eventure1.png";
 import eventure2 from "../assets/eventure2.png";
 import eventure3 from "../assets/eventure3.png";
@@ -27,12 +32,10 @@ export const projects: Project[] = [
       "Docker",
       "Expo",
     ],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/MeinardEdrei/Seated.git",
+    // liveUrl: "https://example.com",
     images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=675&fit=crop",
-      "from-violet-600 via-purple-500 to-fuchsia-500",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=675&fit=crop",
+      seated1, seated2, seated3, seated4
     ],
     gradient: "from-violet-600 via-purple-500 to-fuchsia-500",
     featured: true,
@@ -50,7 +53,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "Tailwind", "C#", "ASP.NET", "MySQL"],
     githubUrl: "https://github.com/MeinardEdrei/Eventure.git",
     // liveUrl: "https://example.com",
-    images: [eventure1, eventure2, eventure3],
+    images: [eventure0, eventure1, eventure2, eventure3],
     gradient: "from-indigo-600 via-violet-500 to-purple-600",
     featured: true,
   },
